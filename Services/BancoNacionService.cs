@@ -17,32 +17,27 @@ namespace api_cotizacion.services
 
         public async Task<IActionResult> Cotizaciones()
         {
-
-            var action = CotizacionesBN();
-            var jsonResult = action.Result as JsonResult;
-            var value = jsonResult.Value;
-            var jsStr = JsonConvert.SerializeObject(value);
-            var cotizacionBN = JsonConvert.DeserializeObject<List<CotizacionBN>>(jsStr);
+            var cotizacionBN = CotizacionesBN();
 
             List<Cotizaciones> Listcotizacion = new List<Cotizaciones>();
 
             Cotizaciones cotizacion = new Cotizaciones()
             {
-                FechaCotizacionDolarBilleteBNA = cotizacionBN[0].FechaBilletes.ToString("yyyy-MM-dd"),
-                CotizacionCompraDolarBilleteBNA = cotizacionBN[0].CompraBilletes.ToString(),
-                CotizacionVentaDolarBilleteBNA = cotizacionBN[0].VentaBilletes.ToString(),
+                FechaCotizacionDolarBilleteBNA = cotizacionBN.Result.FechaBilletes.ToString("yyyy-MM-dd"),
+                CotizacionCompraDolarBilleteBNA = cotizacionBN.Result.CompraBilletes.ToString(),
+                CotizacionVentaDolarBilleteBNA = cotizacionBN.Result.VentaBilletes.ToString(),
 
-                FechaCotizacionDolarDivisaBNA = cotizacionBN[0].FechaDivisas.ToString("yyyy-MM-dd"),
-                CotizacionCompraDolarDivisaBNA = cotizacionBN[0].CompraDivisas.ToString(),
-                CotizacionVentaDolarDivisaBNA = cotizacionBN[0].VentaDivisas.ToString(),
+                FechaCotizacionDolarDivisaBNA = cotizacionBN.Result.FechaDivisas.ToString("yyyy-MM-dd"),
+                CotizacionCompraDolarDivisaBNA = cotizacionBN.Result.CompraDivisas.ToString(),
+                CotizacionVentaDolarDivisaBNA = cotizacionBN.Result.VentaDivisas.ToString(),
 
-                FechaCotizacionEuroBilleteBNA = cotizacionBN[0].FechaEuroBillete.ToString("yyyy-MM-dd"),
-                CotizacionCompraEuroBilleteBNA = cotizacionBN[0].CompraEuroBilletes.ToString(),
-                CotizacionVentaEuroBilleteBNA = cotizacionBN[0].VentaEuroBilletes.ToString(),
+                FechaCotizacionEuroBilleteBNA = cotizacionBN.Result.FechaEuroBillete.ToString("yyyy-MM-dd"),
+                CotizacionCompraEuroBilleteBNA = cotizacionBN.Result.CompraEuroBilletes.ToString(),
+                CotizacionVentaEuroBilleteBNA = cotizacionBN.Result.VentaEuroBilletes.ToString(),
 
-                FechaCotizacionEuroDivisaBNA = cotizacionBN[0].FechaEuroDivisas.ToString("yyyy-MM-dd"),
-                CotizacionCompraEuroDivisaBNA = cotizacionBN[0].CompraEuroDivisas.ToString(),
-                CotizacionVentaEuroDivisaBNA = cotizacionBN[0].VentaEuroDivisas.ToString(),
+                FechaCotizacionEuroDivisaBNA = cotizacionBN.Result.FechaEuroDivisas.ToString("yyyy-MM-dd"),
+                CotizacionCompraEuroDivisaBNA = cotizacionBN.Result.CompraEuroDivisas.ToString(),
+                CotizacionVentaEuroDivisaBNA = cotizacionBN.Result.VentaEuroDivisas.ToString(),
 
             };
             Listcotizacion.Add(cotizacion);
@@ -50,46 +45,98 @@ namespace api_cotizacion.services
             return new JsonResult(Listcotizacion);
         }
 
-        public async Task<IActionResult> CotizacionesBN()
+        //public async Task<IActionResult> CotizacionesBN()
+        //{
+        //    var HtmlDocument = new HtmlWeb().Load("https://www.bna.com.ar/Personas").DocumentNode.SelectNodes("(//td)");
+        //    var HtmlDocumentFecha = new HtmlWeb().Load("https://www.bna.com.ar/Personas").DocumentNode.SelectNodes("(//th)");
+
+        //    List<CotizacionBN> cotizaciones = new List<CotizacionBN>();
+
+        //    var fechaCotizacionBilletes = Convert.ToDateTime(HtmlDocumentFecha[0].InnerText, CultureInfo.GetCultureInfo("es-AR")).ToUniversalTime();
+        //    var fechaCotizacionDivisas = Convert.ToDateTime(HtmlDocumentFecha[3].InnerText, CultureInfo.GetCultureInfo("es-AR")).ToUniversalTime();
+
+        //    String strCotizacionCompraBilletes = HtmlDocument[1].InnerText;
+        //    String strCotizacionVentaBilletes = HtmlDocument[2].InnerText;
+        //    String strCotizacionCompraEuroBillete = HtmlDocument[4].InnerText;
+        //    String strCotizacionVentaEuroBillete = HtmlDocument[5].InnerText;
+        //    String strCotizacionCompraDivisas = HtmlDocument[10].InnerText.Replace(".", ",");
+        //    String strCotizacionventaDivisas = HtmlDocument[11].InnerText.Replace(".", ",");
+        //    String strCotizacionCompraEuroDivisas = HtmlDocument[16].InnerText.Replace(".", ",");
+        //    String strCotizacionventaEuroDivisas = HtmlDocument[17].InnerText.Replace(".", ",");
+
+
+        //    CotizacionBN cotizacion = new CotizacionBN()
+        //    {
+        //        FechaBilletes = fechaCotizacionBilletes,
+        //        CompraBilletes = Convert.ToDecimal(strCotizacionCompraBilletes, CultureInfo.GetCultureInfo("es-AR")),
+        //        VentaBilletes = Convert.ToDecimal(strCotizacionVentaBilletes, CultureInfo.GetCultureInfo("es-AR")),
+        //        FechaDivisas = fechaCotizacionDivisas,
+        //        CompraDivisas = Convert.ToDecimal(strCotizacionCompraDivisas, CultureInfo.GetCultureInfo("es-AR")),
+        //        VentaDivisas = Convert.ToDecimal(strCotizacionventaDivisas, CultureInfo.GetCultureInfo("es-AR")),
+        //        FechaEuroBillete = fechaCotizacionBilletes,
+        //        CompraEuroBilletes = Convert.ToDecimal(strCotizacionCompraEuroBillete, CultureInfo.GetCultureInfo("es-AR")),
+        //        VentaEuroBilletes = Convert.ToDecimal(strCotizacionVentaEuroBillete, CultureInfo.GetCultureInfo("es-AR")),
+        //        FechaEuroDivisas = fechaCotizacionDivisas,
+        //        CompraEuroDivisas = Convert.ToDecimal(strCotizacionCompraEuroDivisas, CultureInfo.GetCultureInfo("es-AR")),
+        //        VentaEuroDivisas = Convert.ToDecimal(strCotizacionventaEuroDivisas, CultureInfo.GetCultureInfo("es-AR"))
+        //    };
+
+        //    cotizaciones.Add(cotizacion);
+
+        //    return new JsonResult(cotizaciones);
+
+        //}
+        public async Task<CotizacionBN> CotizacionesBN()
         {
-            var HtmlDocument = new HtmlWeb().Load("https://www.bna.com.ar/Personas").DocumentNode.SelectNodes("(//td)");
-            var HtmlDocumentFecha = new HtmlWeb().Load("https://www.bna.com.ar/Personas").DocumentNode.SelectNodes("(//th)");
-
-            List<CotizacionBN> cotizaciones = new List<CotizacionBN>();
-
-            var fechaCotizacionBilletes = Convert.ToDateTime(HtmlDocumentFecha[0].InnerText, CultureInfo.GetCultureInfo("es-AR")).ToUniversalTime();
-            var fechaCotizacionDivisas = Convert.ToDateTime(HtmlDocumentFecha[3].InnerText, CultureInfo.GetCultureInfo("es-AR")).ToUniversalTime();
-
-            String strCotizacionCompraBilletes = HtmlDocument[1].InnerText;
-            String strCotizacionVentaBilletes = HtmlDocument[2].InnerText;
-            String strCotizacionCompraEuroBillete = HtmlDocument[4].InnerText;
-            String strCotizacionVentaEuroBillete = HtmlDocument[5].InnerText;
-            String strCotizacionCompraDivisas = HtmlDocument[10].InnerText.Replace(".", ",");
-            String strCotizacionventaDivisas = HtmlDocument[11].InnerText.Replace(".", ",");
-            String strCotizacionCompraEuroDivisas = HtmlDocument[16].InnerText.Replace(".", ",");
-            String strCotizacionventaEuroDivisas = HtmlDocument[17].InnerText.Replace(".", ",");
-
-
-            CotizacionBN cotizacion = new CotizacionBN()
+            var handler = new HttpClientHandler
             {
-                FechaBilletes = fechaCotizacionBilletes,
-                CompraBilletes = Convert.ToDecimal(strCotizacionCompraBilletes, CultureInfo.GetCultureInfo("es-AR")),
-                VentaBilletes = Convert.ToDecimal(strCotizacionVentaBilletes, CultureInfo.GetCultureInfo("es-AR")),
-                FechaDivisas = fechaCotizacionDivisas,
-                CompraDivisas = Convert.ToDecimal(strCotizacionCompraDivisas, CultureInfo.GetCultureInfo("es-AR")),
-                VentaDivisas = Convert.ToDecimal(strCotizacionventaDivisas, CultureInfo.GetCultureInfo("es-AR")),
-                FechaEuroBillete = fechaCotizacionBilletes,
-                CompraEuroBilletes = Convert.ToDecimal(strCotizacionCompraEuroBillete, CultureInfo.GetCultureInfo("es-AR")),
-                VentaEuroBilletes = Convert.ToDecimal(strCotizacionVentaEuroBillete, CultureInfo.GetCultureInfo("es-AR")),
-                FechaEuroDivisas = fechaCotizacionDivisas,
-                CompraEuroDivisas = Convert.ToDecimal(strCotizacionCompraEuroDivisas, CultureInfo.GetCultureInfo("es-AR")),
-                VentaEuroDivisas = Convert.ToDecimal(strCotizacionventaEuroDivisas, CultureInfo.GetCultureInfo("es-AR"))
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
             };
 
-            cotizaciones.Add(cotizacion);
+            using (var client = new HttpClient(handler))
+            {
+                string url = "https://www.bna.com.ar/Personas";
+                string htmlContent = await client.GetStringAsync(url);
 
-            return new JsonResult(cotizaciones);
+                var htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(htmlContent);
 
+                var HtmlDocument = htmlDoc.DocumentNode.SelectNodes("(//td)");
+                var HtmlDocumentFecha = htmlDoc.DocumentNode.SelectNodes("(//th)");
+                var fechaCotizacionBilletes = Convert.ToDateTime(HtmlDocumentFecha[0].InnerText.Trim(), CultureInfo.GetCultureInfo("es-AR")).ToUniversalTime();
+                var fechaCotizacionDivisas = Convert.ToDateTime(HtmlDocumentFecha[3].InnerText.Trim(), CultureInfo.GetCultureInfo("es-AR")).ToUniversalTime();
+
+                // Limpieza de datos
+                string Limpiar(string input) => input.Trim().Replace(".", ",").Replace("\u00a0", ""); // Elimina espacios no separables
+
+                // Obtener y limpiar cotizaciones
+                string strCotizacionCompraBilletes = Limpiar(HtmlDocument[1].InnerText);
+                string strCotizacionVentaBilletes = Limpiar(HtmlDocument[2].InnerText);
+                string strCotizacionCompraEuroBillete = Limpiar(HtmlDocument[4].InnerText);
+                string strCotizacionVentaEuroBillete = Limpiar(HtmlDocument[5].InnerText);
+                string strCotizacionCompraDivisas = Limpiar(HtmlDocument[10].InnerText);
+                string strCotizacionventaDivisas = Limpiar(HtmlDocument[11].InnerText);
+                string strCotizacionCompraEuroDivisas = Limpiar(HtmlDocument[16].InnerText);
+                string strCotizacionventaEuroDivisas = Limpiar(HtmlDocument[17].InnerText);
+
+                // Carga del objeto
+                CotizacionBN cotizacion = new CotizacionBN()
+                {
+                    FechaBilletes = fechaCotizacionBilletes,
+                    CompraBilletes = Convert.ToDecimal(strCotizacionCompraBilletes, CultureInfo.GetCultureInfo("es-AR")),
+                    VentaBilletes = Convert.ToDecimal(strCotizacionVentaBilletes, CultureInfo.GetCultureInfo("es-AR")),
+                    FechaDivisas = fechaCotizacionDivisas,
+                    CompraDivisas = Convert.ToDecimal(strCotizacionCompraDivisas, CultureInfo.GetCultureInfo("es-AR")),
+                    VentaDivisas = Convert.ToDecimal(strCotizacionventaDivisas, CultureInfo.GetCultureInfo("es-AR")),
+                    FechaEuroBillete = fechaCotizacionBilletes,
+                    CompraEuroBilletes = Convert.ToDecimal(strCotizacionCompraEuroBillete, CultureInfo.GetCultureInfo("es-AR")),
+                    VentaEuroBilletes = Convert.ToDecimal(strCotizacionVentaEuroBillete, CultureInfo.GetCultureInfo("es-AR")),
+                    FechaEuroDivisas = fechaCotizacionDivisas,
+                    CompraEuroDivisas = Convert.ToDecimal(strCotizacionCompraEuroDivisas, CultureInfo.GetCultureInfo("es-AR")),
+                    VentaEuroDivisas = Convert.ToDecimal(strCotizacionventaEuroDivisas, CultureInfo.GetCultureInfo("es-AR"))
+                };
+                return cotizacion;
+            }
         }
 
     }

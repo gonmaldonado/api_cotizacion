@@ -1,4 +1,3 @@
-
 using api_cotizacion.Interfaces;
 using api_cotizacion.services;
 
@@ -8,27 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IBancoNacionService, BancoNacionService>();
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_COTIZACION V1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
