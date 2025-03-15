@@ -13,10 +13,16 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UsePathBase("/apicotizacion");
+
+// Habilitar Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_COTIZACION V1");
+    // Ajustar ruta del JSON incluyendo la carpeta
+    c.SwaggerEndpoint("/apicotizacion/swagger/v1/swagger.json", "API_COTIZACION V1");
+
+    // Hacer que Swagger UI esté en /apicotizacion/swagger
     c.RoutePrefix = "swagger";
 });
 
