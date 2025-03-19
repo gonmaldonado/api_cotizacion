@@ -1,6 +1,17 @@
 ﻿using System;
 namespace api_cotizacion.Entities
 {
+    public class Cotizacion
+    {
+        public List<Item>? Cotizaciones { get; set; }
+    }
+    public class Item
+    {
+        public string? Cotizacion { get; set; }
+        public string? Fecha { get; set; }
+        public decimal Compra { get; set; }
+        public decimal Venta { get; set; }
+    }
     public class CotizacionBN
     {
         public DateTime FechaBilletes { get; set; }

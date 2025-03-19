@@ -52,7 +52,7 @@ namespace api_cotizacion.services
                 // Carga del objeto
                 Item DolarBillete = new Item()
                 { Cotizacion = "Dolar Billete",
-                    Fecha = fechaCotizacionBilletes,
+                    Fecha = fechaCotizacionBilletes.ToString("dd-MM-yyyy"),
                     Compra = Convert.ToDecimal(strCotizacionCompraBilletes, CultureInfo.GetCultureInfo("es-AR")),
                     Venta = Convert.ToDecimal(strCotizacionVentaBilletes, CultureInfo.GetCultureInfo("es-AR"))
                 }; 
@@ -61,7 +61,7 @@ namespace api_cotizacion.services
                 Item DolarDivisa = new Item()
                 {
                     Cotizacion = "Dolar Divisa",
-                    Fecha = fechaCotizacionDivisas,
+                    Fecha = fechaCotizacionDivisas.ToString("dd-MM-yyyy"),
                     Compra = Convert.ToDecimal(strCotizacionCompraDivisas, CultureInfo.GetCultureInfo("es-AR")),
                     Venta = Convert.ToDecimal(strCotizacionventaDivisas, CultureInfo.GetCultureInfo("es-AR"))
                 };
@@ -70,7 +70,7 @@ namespace api_cotizacion.services
                 Item EuroBillete = new Item()
                 {
                     Cotizacion = "Euro Billete",
-                    Fecha = fechaCotizacionBilletes,
+                    Fecha = fechaCotizacionBilletes.ToString("dd-MM-yyyy"),
                     Compra = Convert.ToDecimal(strCotizacionCompraEuroBillete, CultureInfo.GetCultureInfo("es-AR")),
                     Venta = Convert.ToDecimal(strCotizacionVentaEuroBillete, CultureInfo.GetCultureInfo("es-AR"))
                 };
@@ -79,7 +79,7 @@ namespace api_cotizacion.services
                 Item EuroDivisa = new Item()
                 {
                     Cotizacion = "Euro Divisa",
-                    Fecha = fechaCotizacionDivisas,
+                    Fecha = fechaCotizacionDivisas.ToString("dd-MM-yyyy"),
                     Compra = Convert.ToDecimal(strCotizacionCompraEuroDivisas, CultureInfo.GetCultureInfo("es-AR")),
                     Venta = Convert.ToDecimal(strCotizacionventaEuroDivisas, CultureInfo.GetCultureInfo("es-AR"))
                 };
@@ -90,7 +90,10 @@ namespace api_cotizacion.services
         }
         public async Task<IActionResult> Cotizaciones()
         {
-            return new JsonResult(CotizacionesBN());
+            Cotizacion Cotizaciones = new Cotizacion();
+            Cotizaciones.Cotizaciones = CotizacionesBN().Result;
+
+            return new JsonResult(Cotizaciones);
         }
 
     }
