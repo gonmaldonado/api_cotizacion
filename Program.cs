@@ -23,6 +23,7 @@ if (!builder.Configuration.GetValue<bool>("ProdEnvironment"))
         var swaggerJsonUrl = "/swagger/v1/swagger.json";
         c.SwaggerEndpoint(swaggerJsonUrl, "API_COTIZACION V1");
         c.RoutePrefix = "swagger";
+        c.DefaultModelsExpandDepth(-1);
     });
 
 }
@@ -33,6 +34,7 @@ else
     {
         var swaggerJsonUrl = "/apicotizacion/swagger/v1/swagger.json";
         c.SwaggerEndpoint(swaggerJsonUrl, "API_COTIZACION V1");
+        c.DefaultModelsExpandDepth(-1);
     });
 
 }

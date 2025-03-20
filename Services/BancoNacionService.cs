@@ -88,7 +88,7 @@ namespace api_cotizacion.services
                 return cotizaciones;
             }
         }
-        public async Task<IActionResult> Cotizaciones()
+        public async Task<ActionResult<Cotizacion>> Cotizaciones()
         {
             Cotizacion Cotizaciones = new Cotizacion();
             Cotizaciones.Cotizaciones = CotizacionesBN().Result;

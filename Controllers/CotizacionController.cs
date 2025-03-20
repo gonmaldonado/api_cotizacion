@@ -1,6 +1,7 @@
 ﻿using api_cotizacion.services;
 using api_cotizacion.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using api_cotizacion.Entities;
 
 namespace api_cotizacion.Controllers
 {
@@ -17,7 +18,7 @@ namespace api_cotizacion.Controllers
 
         [HttpGet]
         [Route("BancoNacion")]
-        public async Task<object> ListAsyncCotizaciones()
+        public async Task<ActionResult<Cotizacion>> ListAsyncCotizaciones()
         {
             return await _bancoNacionService.Cotizaciones();
         }
