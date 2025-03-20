@@ -13,26 +13,29 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Detecta si está en desarrollo o producción
-var isDevelopment = app.Environment.IsDevelopment();
-
-// Si está en producción, usa el prefijo "/apicotizacion"
-if (!isDevelopment)
-{
-    app.UsePathBase("/apicotizacion");
-}
-
 // Habilitar Swagger
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    // Ajustar ruta del JSON dependiendo del entorno
-    var swaggerJsonUrl = isDevelopment ? "/swagger/v1/swagger.json" : "/apicotizacion/swagger/v1/swagger.json";
-    c.SwaggerEndpoint(swaggerJsonUrl, "API_COTIZACION V1");
 
-    // Hacer que Swagger UI esté en la ruta correcta
-    c.RoutePrefix = isDevelopment ? "swagger" : "apicotizacion/swagger";
-});
+if (!builder.Configuration.GetValue<bool>("ProdEnvironment"))
+{
+    app.UseSwaggerUI(c =>
+    {
+        var swaggerJsonUrl = "/swagger/v1/swagger.json";
+        c.SwaggerEndpoint(swaggerJsonUrl, "API_COTIZACION V1");
+        c.RoutePrefix = "swagger";
+    });
+
+}
+else
+{
+    app.UsePathBase("/apicotizacion");
+    app.UseSwaggerUI(c =>
+    {
+        var swaggerJsonUrl = "/apicotizacion/swagger/v1/swagger.json";
+        c.SwaggerEndpoint(swaggerJsonUrl, "API_COTIZACION V1");
+    });
+
+}
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
